@@ -1,6 +1,7 @@
 package com.sasa.mskrpoject
 
 import android.content.Context
+import android.content.Intent
 import android.content.SharedPreferences
 import android.net.Uri
 import androidx.appcompat.app.AppCompatActivity
@@ -60,14 +61,14 @@ class MainActivity : AppCompatActivity() {
         val deeplink = preferences.getString("PREFS_DEEPLINK", null)
         initOkHttpClient()
         apsFlyer()
+        // Иначе начинаем обработку диплинка
         if (deeplink == null) {
             // Если диплинка в хранилище нет, берём из фейсбук коллбека
             getDeeplinkFromFacebook()
         } else {
-            // Иначе начинаем обработку диплинка
-            processDeeplinkAndStart(deeplink)
+            processDeeplinkAndStart("") // передаем пустую строку в метод обработки диплинка
         }
-        processDeeplinkAndStart(deeplink ?: "")
+        //processDeeplinkAndStart(deeplink ?: "")
 
     }
     private fun initOkHttpClient() {
@@ -201,14 +202,13 @@ class MainActivity : AppCompatActivity() {
                 check.check(applicationContext) }
             if (isBot) { // Если бот открываем игру-заглушку
                 // GameActivity::class.java - пример активити с заглушкой
-//                startActivity(Intent(this@MainActivity, GameActivity::class.java))
-//                finish()
+                startActivity(Intent(this@MainActivity, ClassActivity::class.java))
+                finish()
                 Toast.makeText(applicationContext, "Game", Toast.LENGTH_LONG).show()
             } else {
                 handler.post(conversionTask) // Запускаем проверку конверсии по таймеру (Пункт 6)
-//                myWebView.loadUrl(finalUrl) // Открываем вебвью с сформированной ссылкой
-//                progressBar.visibility = View.GONE
-//                myWebView.visibility = View.VISIBLE
+                startActivity(Intent(this@MainActivity, Privacy::class.java))
+                finish()
     Toast.makeText(applicationContext, "web", Toast.LENGTH_LONG).show()
                 // дополнительные отправки событий в Onesignal
 
